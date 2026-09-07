@@ -13,7 +13,6 @@ import {
 import { cn } from "../../lib/utils";
 import { useAuth } from "../../context/AuthContext";
 
-/* Primary navigation — icon + label rail, matching the reference sidebar. */
 const NAV = [
   { to: "/", label: "Dashboard", icon: LayoutGrid, end: true },
   { to: "/leads", label: "Leads", icon: Users },
@@ -27,17 +26,17 @@ export function Sidebar({ onNavigate }) {
   const { logout } = useAuth();
 
   return (
-    <aside className="flex h-full w-64 flex-col bg-surface border-r border-line">
+    <aside className="flex h-full w-64 flex-col rounded-3xl border border-zinc-200 bg-white p-4 shadow-sm">
       {/* Brand */}
-      <div className="flex items-center gap-2.5 px-6 py-6">
-        <div className="brand-gradient flex h-9 w-9 items-center justify-center rounded-xl text-white">
+      <div className="flex items-center gap-3 px-3 py-4">
+        <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-zinc-900 text-white shadow-sm">
           <Sparkles className="h-5 w-5" />
         </div>
-        <span className="font-display text-lg font-bold text-ink">TTP CRM</span>
+        <span className="font-display text-lg font-bold text-zinc-900">AI CRM</span>
       </div>
 
       {/* Nav links */}
-      <nav className="flex-1 space-y-1 px-3">
+      <nav className="flex-1 space-y-1.5 pt-2">
         {NAV.map(({ to, label, icon: Icon, end }) => (
           <NavLink
             key={to}
@@ -46,10 +45,10 @@ export function Sidebar({ onNavigate }) {
             onClick={onNavigate}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition",
+                "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200",
                 isActive
-                  ? "bg-brand-50 text-brand-700"
-                  : "text-ink-soft hover:bg-surface-muted hover:text-ink"
+                  ? "bg-zinc-900 text-white shadow-sm"
+                  : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
               )
             }
           >
@@ -60,16 +59,16 @@ export function Sidebar({ onNavigate }) {
       </nav>
 
       {/* Footer actions */}
-      <div className="space-y-1 border-t border-line p-3">
+      <div className="space-y-1.5 border-t border-zinc-100 pt-4">
         <NavLink
           to="/settings"
           onClick={onNavigate}
           className={({ isActive }) =>
             cn(
-              "flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition",
+              "flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200",
               isActive
-                ? "bg-brand-50 text-brand-700"
-                : "text-ink-soft hover:bg-surface-muted hover:text-ink"
+                ? "bg-zinc-900 text-white"
+                : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900"
             )
           }
         >
@@ -78,7 +77,7 @@ export function Sidebar({ onNavigate }) {
         </NavLink>
         <button
           onClick={logout}
-          className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-ink-soft transition hover:bg-rose-50 hover:text-rose-600"
+          className="flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-zinc-600 transition-all hover:bg-rose-50 hover:text-rose-600"
         >
           <LogOut className="h-[18px] w-[18px]" />
           Log out

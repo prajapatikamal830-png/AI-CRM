@@ -83,11 +83,12 @@ function NoteCard({ note, onEdit, onDelete, onTogglePin }) {
   return (
     <div
       className={cn(
-        "break-inside-avoid relative flex flex-col gap-3 overflow-hidden rounded-2xl bg-surface p-5",
-        "border border-line shadow-(--shadow-card) transition hover:shadow-(--shadow-pop)",
-        note.pinned && "ring-1 ring-brand-200"
+        "break-inside-avoid relative flex flex-col gap-3 overflow-hidden rounded-3xl bg-white/[0.04] backdrop-blur-xl p-5",
+        "border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 hover:-translate-y-2 hover:border-cyan-400/40 hover:shadow-[0_30px_60px_rgba(34,211,238,0.15)]",
+        note.pinned && "ring-1 ring-cyan-400/50"
       )}
     >
+
       {/* Pinned accent strip along the top */}
       {note.pinned && (
         <div className="pointer-events-none absolute inset-x-0 top-0 h-1 rounded-t-2xl bg-linear-to-r from-brand-400 to-brand-600" />

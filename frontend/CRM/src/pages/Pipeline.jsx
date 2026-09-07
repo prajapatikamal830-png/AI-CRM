@@ -24,7 +24,6 @@ import { PIPELINE_STAGES, STAGE_STYLES, PRIORITY_STYLES } from "../lib/constants
 import { cn } from "../lib/utils";
 import { toast } from "sonner";
 
-/* Group a flat lead list into { stage: Lead[] } buckets. */
 const toBoard = (leads) => {
   const board = Object.fromEntries(PIPELINE_STAGES.map((s) => [s, []]));
   for (const l of leads) (board[l.status] || board.New).push(l);
@@ -57,7 +56,6 @@ export default function Pipeline() {
     ? Object.values(board).flat().find((l) => l._id === activeId)
     : null;
 
-  /* Move cards between columns live as the user drags over them. */
   const handleDragOver = ({ active, over }) => {
     if (!over) return;
     const from = findContainer(active.id);
@@ -71,14 +69,12 @@ export default function Pipeline() {
       if (idx === -1) return prev;
       const [moved] = fromItems.splice(idx, 1);
       moved.status = to;
-      // Insert near the hovered card (or append if hovering the column).
       const overIdx = toItems.findIndex((l) => l._id === over.id);
       toItems.splice(overIdx === -1 ? toItems.length : overIdx, 0, moved);
       return { ...prev, [from]: fromItems, [to]: toItems };
     });
   };
 
-  /* Persist the final ordering + stage to the backend. */
   const handleDragEnd = ({ active, over }) => {
     setActiveId(null);
     if (!over) return;
@@ -93,7 +89,6 @@ export default function Pipeline() {
         oldIdx !== -1 && newIdx !== -1 ? arrayMove(items, oldIdx, newIdx) : items;
       const next = { ...prev, [container]: reordered };
 
-      // Build the persistence payload across all affected columns.
       const updates = [];
       PIPELINE_STAGES.forEach((stage) => {
         next[stage].forEach((l, order) =>
@@ -105,7 +100,6 @@ export default function Pipeline() {
     });
   };
 
-  /* ── KPI computations ─────────────────────────────────────────────── */
   const allLeads = Object.values(board).flat();
   const totalValue = allLeads.reduce((s, l) => s + (l.value || 0), 0);
   const openDeals = allLeads.filter((l) => l.status !== "Won" && l.status !== "Lost");
@@ -125,25 +119,25 @@ export default function Pipeline() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatTile
           icon={DollarSign}
-          tint="bg-brand-50 text-brand-600"
+          tint="bg-zinc-100 text-zinc-900"
           label="Total pipeline"
           value={currency(totalValue, { compact: true })}
         />
         <StatTile
           icon={Layers}
-          tint="bg-sky-50 text-sky-600"
+          tint="bg-zinc-100 text-zinc-900"
           label="Open deals"
           value={openDeals.length}
         />
         <StatTile
           icon={Target}
-          tint="bg-emerald-50 text-emerald-600"
+          tint="bg-emerald-50 text-emerald-700 border border-emerald-200"
           label="Won value"
           value={currency(wonValue, { compact: true })}
         />
         <StatTile
           icon={TrendingUp}
-          tint="bg-violet-50 text-violet-600"
+          tint="bg-indigo-50 text-indigo-700 border border-indigo-200"
           label="Win rate"
           value={`${winRate}%`}
         />
@@ -157,7 +151,7 @@ export default function Pipeline() {
         onDragEnd={handleDragEnd}
         onDragCancel={() => setActiveId(null)}
       >
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-5 overflow-x-auto pb-6 no-scrollbar">
           {PIPELINE_STAGES.map((stage) => (
             <Column key={stage} stage={stage} leads={board[stage]} />
           ))}
@@ -171,7 +165,6 @@ export default function Pipeline() {
   );
 }
 
-/* ── KPI stat tile (matches Leads page pattern) ─────────────────────── */
 function StatTile({ icon: Icon, label, value, tint }) {
   return (
     <Card className="p-4">
@@ -180,15 +173,14 @@ function StatTile({ icon: Icon, label, value, tint }) {
           <Icon className="h-5 w-5" />
         </div>
         <div className="min-w-0">
-          <p className="truncate text-xs text-ink-soft">{label}</p>
-          <p className="font-display text-lg font-bold text-ink">{value}</p>
+          <p className="truncate text-xs text-zinc-500">{label}</p>
+          <p className="font-display text-lg font-bold text-zinc-900">{value}</p>
         </div>
       </div>
     </Card>
   );
 }
 
-/* ── Column ─────────────────────────────────────────────────────────── */
 function Column({ stage, leads }) {
   const { setNodeRef, isOver } = useDroppable({ id: stage });
   const style = STAGE_STYLES[stage];
@@ -196,19 +188,19 @@ function Column({ stage, leads }) {
 
   return (
     <div className="flex w-80 shrink-0 flex-col">
-      {/* Colored top accent bar */}
-      <div className={cn("mb-2 h-1 w-full rounded-full", style.bar)} />
+      {/* Top accent line */}
+      <div className={cn("mb-2.5 h-1 w-full rounded-full", style.bar)} />
 
       {/* Column header */}
       <div className="mb-3 flex items-center justify-between px-1">
         <div className="flex items-center gap-2">
           <span className={cn("h-2.5 w-2.5 rounded-full", style.dot)} />
-          <h3 className="text-sm font-semibold text-ink">{stage}</h3>
-          <span className="rounded-full bg-surface px-2 py-0.5 text-xs font-medium text-ink-soft shadow-sm border border-line">
+          <h3 className="text-sm font-semibold text-zinc-900">{stage}</h3>
+          <span className="rounded-full border border-zinc-200 bg-white px-2.5 py-0.5 text-xs font-medium text-zinc-600 shadow-xs">
             {leads.length}
           </span>
         </div>
-        <span className="text-xs font-medium text-ink-soft">
+        <span className="text-xs font-medium text-zinc-500">
           {currency(value, { compact: true })}
         </span>
       </div>
@@ -217,8 +209,8 @@ function Column({ stage, leads }) {
       <div
         ref={setNodeRef}
         className={cn(
-          "flex min-h-[60vh] flex-1 flex-col gap-3 rounded-3xl border-2 border-dashed border-transparent bg-surface-muted/60 p-3 transition",
-          isOver && "border-brand-300 bg-brand-50/60"
+          "flex min-h-[60vh] flex-1 flex-col gap-3 rounded-3xl border border-zinc-200/80 bg-zinc-100/50 p-3.5 transition-all duration-200",
+          isOver && "border-zinc-400 bg-zinc-200/60"
         )}
       >
         <SortableContext
@@ -230,14 +222,13 @@ function Column({ stage, leads }) {
           ))}
         </SortableContext>
         {leads.length === 0 && (
-          <p className="mt-6 text-center text-xs text-ink-soft">Drop leads here</p>
+          <p className="mt-8 text-center text-xs text-zinc-400">Drop leads here</p>
         )}
       </div>
     </div>
   );
 }
 
-/* ── Sortable card wrapper ──────────────────────────────────────────── */
 function SortableCard({ lead }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: lead._id });
@@ -246,18 +237,16 @@ function SortableCard({ lead }) {
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={cn(isDragging && "opacity-40")}
+      className={cn(isDragging && "opacity-30 scale-95")}
     >
       <LeadCard lead={lead} dragHandle={{ attributes, listeners }} />
     </div>
   );
 }
 
-/* ── Card UI ────────────────────────────────────────────────────────── */
 function LeadCard({ lead, dragHandle, overlay }) {
   const [suggesting, setSuggesting] = useState(false);
 
-  // AI: suggest the next best action / priority for this lead.
   const suggest = async (e) => {
     e.stopPropagation();
     setSuggesting(true);
@@ -277,17 +266,18 @@ function LeadCard({ lead, dragHandle, overlay }) {
   return (
     <div
       className={cn(
-        "group rounded-2xl bg-surface p-3.5 shadow-[var(--shadow-soft)] transition border border-line/60",
-        overlay ? "shadow-[var(--shadow-pop)] rotate-2" : "hover:shadow-[var(--shadow-card)]"
+        "group rounded-2xl border border-zinc-200 bg-white p-4 shadow-xs transition-all duration-200",
+        overlay
+          ? "border-zinc-400 bg-white shadow-xl rotate-2 scale-105"
+          : "hover:border-zinc-300 hover:shadow-md"
       )}
     >
-      {/* Name / company row + drag handle */}
       <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-3">
           <Avatar name={lead.name} size="sm" />
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-ink">{lead.name}</p>
-            <p className="flex items-center gap-1 truncate text-xs text-ink-soft">
+            <p className="truncate text-sm font-semibold text-zinc-900">{lead.name}</p>
+            <p className="flex items-center gap-1 truncate text-xs text-zinc-500">
               <Building2 className="h-3 w-3 shrink-0" />
               {lead.company || "—"}
             </p>
@@ -297,7 +287,7 @@ function LeadCard({ lead, dragHandle, overlay }) {
           <button
             {...dragHandle.attributes}
             {...dragHandle.listeners}
-            className="cursor-grab text-ink-soft/50 transition hover:text-ink-soft active:cursor-grabbing"
+            className="cursor-grab text-zinc-400 transition hover:text-zinc-700 active:cursor-grabbing"
             aria-label="Drag"
           >
             <GripVertical className="h-4 w-4" />
@@ -305,20 +295,18 @@ function LeadCard({ lead, dragHandle, overlay }) {
         )}
       </div>
 
-      {/* Value + priority */}
-      <div className="mt-3 flex items-center justify-between">
-        <span className="text-sm font-bold text-ink">{currency(lead.value)}</span>
+      <div className="mt-3.5 flex items-center justify-between">
+        <span className="font-display text-sm font-bold text-zinc-900">{currency(lead.value)}</span>
         <Badge className={PRIORITY_STYLES[lead.priority]}>{lead.priority}</Badge>
       </div>
 
-      {/* AI suggest button — appears on hover, hidden in DragOverlay */}
       {!overlay && (
         <button
           onClick={suggest}
           disabled={suggesting}
-          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl bg-brand-50 py-1.5 text-xs font-medium text-brand-700 opacity-0 transition group-hover:opacity-100 hover:bg-brand-100 disabled:opacity-60"
+          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-zinc-50 py-1.5 text-xs font-medium text-zinc-800 opacity-0 transition-all group-hover:opacity-100 hover:bg-zinc-100 disabled:opacity-60"
         >
-          <Sparkles className={cn("h-3.5 w-3.5", suggesting && "animate-pulse")} />
+          <Sparkles className={cn("h-3.5 w-3.5 text-zinc-700", suggesting && "animate-spin")} />
           {suggesting ? "Thinking…" : "AI suggest next step"}
         </button>
       )}

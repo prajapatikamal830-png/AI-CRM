@@ -1,27 +1,23 @@
 import { Sparkles, TrendingUp, Bot, ShieldCheck } from "lucide-react";
 
-/* Split-screen auth layout: marketing panel on the left, form on the right. */
 export function AuthShell({ children }) {
   return (
-    <div className="flex min-h-screen bg-canvas">
+    <div className="relative flex min-h-screen overflow-hidden bg-[#fafafa] text-zinc-900">
       {/* Brand / marketing panel */}
-      <div className="relative hidden w-1/2 flex-col justify-between overflow-hidden bg-brand-700 p-12 text-white lg:flex">
-        <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-brand-500/40 blur-3xl" />
-        <div className="absolute -bottom-32 -left-16 h-96 w-96 rounded-full bg-brand-600/50 blur-3xl" />
-
-        <div className="relative flex items-center gap-2.5">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15">
+      <div className="relative hidden w-1/2 flex-col justify-between border-r border-zinc-200 bg-zinc-900 p-12 text-white lg:flex">
+        <div className="relative flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-zinc-900 shadow-sm">
             <Sparkles className="h-5 w-5" />
           </div>
-          <span className="font-display text-lg font-bold">Time To Program CRM</span>
+          <span className="font-display text-lg font-bold text-white">Kamal Development CRM</span>
         </div>
 
-        <div className="relative">
-          <h2 className="font-display text-4xl font-bold leading-tight">
+        <div className="relative z-10 my-auto py-12">
+          <h2 className="font-display text-4xl font-extrabold leading-tight tracking-tight text-white">
             Close more deals with an AI co-pilot in your pipeline.
           </h2>
-          <p className="mt-4 max-w-md text-white/70">
-            TTP CRM unifies your leads, contacts and follow-ups — then layers
+          <p className="mt-5 max-w-md text-zinc-400 leading-relaxed">
+            AI CRM unifies your leads, contacts and follow-ups — then layers
             Gemini-powered summaries, email drafts and sales insights on top.
           </p>
 
@@ -31,24 +27,26 @@ export function AuthShell({ children }) {
               { icon: Bot, text: "AI lead scoring & instant email drafting" },
               { icon: ShieldCheck, text: "Secure JWT auth, your data stays yours" },
             ].map(({ icon: Icon, text }) => (
-              <div key={text} className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/15">
+              <div key={text} className="flex items-center gap-3.5 rounded-2xl border border-zinc-800 bg-zinc-800/50 p-3">
+                <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-zinc-700 text-white">
                   <Icon className="h-[18px] w-[18px]" />
                 </div>
-                <span className="text-sm text-white/90">{text}</span>
+                <span className="text-sm font-medium text-zinc-200">{text}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <p className="relative text-xs text-white/50">
-          © {new Date().getFullYear()} Time To Program. All rights reserved.
+        <p className="relative text-xs text-zinc-500">
+          © {new Date().getFullYear()} Kamal Development. All rights reserved.
         </p>
       </div>
 
       {/* Form panel */}
       <div className="flex w-full flex-col items-center justify-center px-6 py-12 lg:w-1/2">
-        <div className="w-full max-w-sm animate-fade-up">{children}</div>
+        <div className="w-full max-w-md rounded-3xl border border-zinc-200 bg-white p-8 shadow-xl animate-fade-up">
+          {children}
+        </div>
       </div>
     </div>
   );

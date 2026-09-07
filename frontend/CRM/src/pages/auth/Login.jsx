@@ -33,7 +33,6 @@ export default function Login() {
     }
   };
 
-  // Convenience: pre-fill the seeded demo credentials.
   const useDemo = () => {
     setValue("email", "alex@timetoprogram.com");
     setValue("password", "Test@1234");
@@ -41,19 +40,19 @@ export default function Login() {
 
   return (
     <AuthShell>
-      <h1 className="text-2xl font-bold text-ink">Welcome back</h1>
-      <p className="mt-1.5 text-sm text-ink-soft">
-        Sign in to your TTP CRM workspace.
+      <h1 className="text-2xl font-bold text-zinc-900">Welcome back</h1>
+      <p className="mt-1.5 text-sm text-zinc-500">
+        Sign in to your AI CRM workspace.
       </p>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
         <Field label="Email" error={errors.email?.message}>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
+            <Mail className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
             <Input
               type="email"
               placeholder="you@company.com"
-              className="pl-9"
+              className="pl-10"
               {...register("email", { required: "Email is required" })}
             />
           </div>
@@ -61,11 +60,11 @@ export default function Login() {
 
         <Field label="Password" error={errors.password?.message}>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-soft" />
+            <Lock className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-zinc-400" />
             <Input
               type="password"
               placeholder="••••••••"
-              className="pl-9"
+              className="pl-10"
               {...register("password", { required: "Password is required" })}
             />
           </div>
@@ -78,14 +77,14 @@ export default function Login() {
 
       <button
         onClick={useDemo}
-        className="mt-3 w-full rounded-full border border-dashed border-brand-300 py-2.5 text-sm font-medium text-brand-700 transition hover:bg-brand-50"
+        className="mt-4 w-full rounded-full border border-dashed border-zinc-300 bg-zinc-50 py-2.5 text-sm font-medium text-zinc-800 transition-all hover:bg-zinc-100 hover:border-zinc-400"
       >
         Try the demo account
       </button>
 
-      <p className="mt-6 text-center text-sm text-ink-soft">
+      <p className="mt-6 text-center text-sm text-zinc-500">
         Don't have an account?{" "}
-        <Link to="/register" className="font-semibold text-brand-700 hover:underline">
+        <Link to="/register" className="font-semibold text-zinc-900 hover:underline">
           Create one
         </Link>
       </p>

@@ -226,7 +226,7 @@ function TaskRow({ task, onToggle, onEdit, onDelete }) {
   const dueToday = task.dueDate ? isToday(new Date(task.dueDate)) : false;
 
   return (
-    <div className="group relative flex items-start gap-3 px-5 py-4 transition-colors hover:bg-surface-muted/50">
+    <div className="group relative flex items-start gap-3.5 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-md p-4 mb-3 transition-all duration-300 hover:border-cyan-500/40 hover:bg-white/[0.07] hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.3)]">
       {/* Priority accent bar — always visible, not only on hover */}
       <span
         aria-hidden

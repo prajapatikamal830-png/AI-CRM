@@ -2,24 +2,23 @@ import { cva } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import { cn } from "../../lib/utils";
 
-/* Button variants — the workhorse of the UI. */
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500/40 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] select-none",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/20 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] select-none",
   {
     variants: {
       variant: {
         primary:
-          "brand-gradient brand-gradient-hover text-white shadow-sm",
+          "bg-zinc-900 text-white hover:bg-zinc-800 shadow-sm hover:shadow-md",
         secondary:
-          "bg-surface-muted text-ink hover:bg-brand-50 border border-line",
+          "bg-zinc-100 text-zinc-900 hover:bg-zinc-200 border border-zinc-200/60",
         outline:
-          "border border-line bg-surface text-ink hover:bg-surface-muted",
-        ghost: "text-ink-soft hover:bg-surface-muted hover:text-ink",
+          "border border-zinc-200 bg-white text-zinc-900 shadow-sm hover:bg-zinc-50 hover:border-zinc-300",
+        ghost: "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900",
         danger: "bg-rose-600 text-white hover:bg-rose-700 shadow-sm",
-        subtle: "bg-brand-50 text-brand-700 hover:bg-brand-100",
+        subtle: "bg-indigo-50 text-indigo-700 border border-indigo-100 hover:bg-indigo-100",
       },
       size: {
-        sm: "h-9 px-3.5",
+        sm: "h-9 px-3.5 text-xs",
         md: "h-10 px-5",
         lg: "h-12 px-6 text-[15px]",
         icon: "h-10 w-10 p-0",

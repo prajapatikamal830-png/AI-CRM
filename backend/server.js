@@ -7,6 +7,12 @@ import { connectDB } from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/error.middleware.js";
 
 import authRoutes from "./routes/auth.routes.js";
+import contactRoutes from "./routes/contact.routes.js";
+import noteRoutes from "./routes/note.routes.js";
+import taskRoutes from "./routes/task.routes.js";
+import leadRoutes from "./routes/lead.routes.js";
+import aiRoutes from "./routes/ai.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
 const app = express();
 
 /* --------------------------------- Middleware --------------------------------- */
@@ -23,11 +29,16 @@ if (process.env.NODE_ENV !== "production") app.use(morgan("dev"));
 
 /* --------------------------------- Routes --------------------------------- */
 app.get("/api/health", (req, res) =>
-    res.json({ success: true, status: "ok", service: "TTP CRM API" })
+    res.json({ success: true, status: "ok", service: "AI CRM API" })
 );
 
 app.use("/api/auth", authRoutes);
 app.use("/api/leads", leadRoutes);
+app.use("/api/contacts", contactRoutes);
+app.use("/api/notes", noteRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 /* --------------------------------- Error handling (last) --------------------------------- */
 app.use(notFound);
@@ -41,7 +52,7 @@ const start = async () => {
     try {
         await connectDB();
         app.listen(PORT, () =>
-            console.log(`🚀 TTP CRM API running on http://localhost:${PORT}`)
+            console.log(`🚀 AI CRM API running on http://localhost:${PORT}`)
         );
     } catch (err) {
         console.error("❌ Failed to start server:", err.message);
